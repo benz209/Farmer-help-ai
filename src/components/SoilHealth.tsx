@@ -19,15 +19,15 @@ export const SoilHealth: React.FC<SoilHealthProps> = ({ data }) => {
   ];
 
   return (
-    <div className="bg-white rounded-[2.5rem] p-8 shadow-xl border border-purple-100 relative overflow-hidden">
-      <div className="flex items-center gap-4 mb-8">
-        <div className="p-4 bg-purple-100 rounded-2xl shadow-inner">
-          <Beaker className="w-8 h-8 text-purple-600" />
+    <div className="bg-white rounded-[2rem] md:rounded-[2.5rem] p-6 md:p-8 shadow-xl border border-purple-100 relative overflow-hidden">
+      <div className="flex items-center gap-4 mb-6 md:mb-8">
+        <div className="p-3 md:p-4 bg-purple-100 rounded-2xl shadow-inner">
+          <Beaker className="w-6 h-6 md:w-8 md:h-8 text-purple-600" />
         </div>
-        <h3 className="text-2xl font-black text-gray-800 tracking-tight">{getTranslation(language, 'soilHealth')}</h3>
+        <h3 className="text-xl md:text-2xl font-black text-gray-800 tracking-tight">{getTranslation(language, 'soilHealth')}</h3>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 relative z-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 relative z-10">
         {metrics.map((m, i) => (
           <motion.div
             key={i}
@@ -35,14 +35,14 @@ export const SoilHealth: React.FC<SoilHealthProps> = ({ data }) => {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.1 }}
-            className="p-6 rounded-3xl bg-purple-50/30 border border-purple-100/50 flex flex-col justify-between hover:bg-purple-50 transition-all hover:shadow-lg group"
+            className="p-5 md:p-6 rounded-2xl md:rounded-3xl bg-purple-50/30 border border-purple-100/50 flex flex-col justify-between hover:bg-purple-50 transition-all hover:shadow-lg group"
           >
-            <p className="text-xs font-black text-purple-600 uppercase tracking-widest mb-6">{m.label}</p>
+            <p className="text-[10px] md:text-xs font-black text-purple-600 uppercase tracking-widest mb-4 md:mb-6">{m.label}</p>
             <div>
-              <p className="text-4xl font-black text-gray-900 mb-1 tracking-tighter">{m.value}</p>
+              <p className="text-2xl md:text-4xl font-black text-gray-900 mb-1 tracking-tighter">{m.value}</p>
               <div className="flex items-center gap-2">
-                <div className={cn("w-2 h-2 rounded-full animate-pulse", m.color.replace('text', 'bg'))} />
-                <p className={cn("text-sm font-bold", m.color)}>{m.status}</p>
+                <div className={cn("w-1.5 h-1.5 md:w-2 md:h-2 rounded-full animate-pulse", m.color.replace('text', 'bg'))} />
+                <p className={cn("text-xs md:text-sm font-bold", m.color)}>{m.status}</p>
               </div>
             </div>
           </motion.div>
