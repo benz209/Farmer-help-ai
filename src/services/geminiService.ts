@@ -18,6 +18,8 @@ export interface WeatherData {
   marketTrends: { crop: string; price: string; trend: 'up' | 'down' | 'stable' }[];
   pestAlerts: { title: string; description: string; severity: 'low' | 'medium' | 'high' }[];
   soilHealth?: { ph: string; nitrogen: string; phosphorus: string; potassium: string };
+  rainfall?: string;
+  rainfallForecast?: string;
 }
 
 export async function getFarmerAdvice(district: string, lang: 'en' | 'ta'): Promise<WeatherData> {
@@ -71,7 +73,9 @@ export async function getFarmerAdvice(district: string, lang: 'en' | 'ta'): Prom
         "nitrogen": "Medium",
         "phosphorus": "High",
         "potassium": "Low"
-      }
+      },
+      "rainfall": "total rainfall for today in mm",
+      "rainfallForecast": "brief forecast for upcoming rainfall"
     }
   `;
 

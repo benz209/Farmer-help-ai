@@ -64,6 +64,8 @@ export const translations = {
     quotaProcess1: "Weather Analysis & Expert Advice",
     quotaProcess2: "Market Trend Analysis",
     quotaProcess3: "Pest Alert Generation",
+    rainfall: "Rainfall",
+    rainfallForecast: "Rainfall Forecast",
   },
   ta: {
     appTitle: "உழவன் தோழன்",
@@ -128,6 +130,8 @@ export const translations = {
     quotaProcess1: "வானிலை பகுப்பாய்வு மற்றும் நிபுணர் ஆலோசனை",
     quotaProcess2: "சந்தை போக்கு பகுப்பாய்வு",
     quotaProcess3: "பூச்சி எச்சரிக்கை உருவாக்கம்",
+    rainfall: "மழைப்பொழிவு",
+    rainfallForecast: "மழை முன்னறிவிப்பு",
   }
 };
 

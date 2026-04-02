@@ -75,6 +75,7 @@ export const WeatherDashboard: React.FC<WeatherDashboardProps> = ({ data, distri
           {/* Advanced Metrics Grid */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 md:gap-4 mt-10 md:mt-16">
             <MetricCard icon={<Droplets className="w-5 h-5 text-blue-300" />} label={getTranslation(language, 'humidity')} value={data.humidity} />
+            <MetricCard icon={<Cloud className="w-5 h-5 text-blue-200" />} label={getTranslation(language, 'rainfall')} value={data.rainfall || '0 mm'} />
             <MetricCard icon={<Wind className="w-5 h-5 text-cyan-300" />} label={getTranslation(language, 'windSpeed')} value={data.windSpeed} />
             <MetricCard icon={<Sun className="w-5 h-5 text-yellow-300" />} label={getTranslation(language, 'uvIndex')} value={data.uvIndex} />
             <MetricCard icon={<Eye className="w-5 h-5 text-emerald-300" />} label={getTranslation(language, 'visibility')} value={data.visibility} />
@@ -176,9 +177,20 @@ export const WeatherDashboard: React.FC<WeatherDashboardProps> = ({ data, distri
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="bg-white rounded-[2rem] md:rounded-[3rem] p-6 md:p-10 shadow-2xl border border-blue-50"
+          className="bg-white rounded-[2rem] md:rounded-[3rem] p-6 md:p-10 shadow-2xl border border-blue-50 flex flex-col"
         >
-          <h3 className="text-xl md:text-2xl font-black text-gray-900 mb-6 md:mb-10 tracking-tight">{getTranslation(language, 'forecast')}</h3>
+          <div className="mb-10">
+            <h3 className="text-xl md:text-2xl font-black text-gray-900 mb-4 tracking-tight">{getTranslation(language, 'forecast')}</h3>
+            {data.rainfallForecast && (
+              <div className="bg-blue-50/50 p-4 rounded-2xl border border-blue-100 flex items-center gap-3">
+                <Droplets className="w-5 h-5 text-blue-500" />
+                <div>
+                  <p className="text-[10px] font-bold text-blue-600 uppercase tracking-widest">{getTranslation(language, 'rainfallForecast')}</p>
+                  <p className="text-sm font-bold text-blue-900">{data.rainfallForecast}</p>
+                </div>
+              </div>
+            )}
+          </div>
           <div className="space-y-4 md:space-y-8">
             {data.forecast.map((f, i) => (
               <div key={i} className="flex items-center justify-between p-4 md:p-6 rounded-[1.5rem] md:rounded-[2rem] bg-blue-50/30 hover:bg-green-50 transition-all border border-transparent hover:border-green-100 group">

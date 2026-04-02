@@ -11,7 +11,7 @@ import { WeatherDashboard } from './components/WeatherDashboard';
 import { getFarmerAdvice, WeatherData } from './services/geminiService';
 import { getTranslation } from './lib/i18n';
 import { motion, AnimatePresence } from 'motion/react';
-import { Loader2, MapPin, Search, Sprout, Info, ShieldCheck, Zap } from 'lucide-react';
+import { Loader2, MapPin, Search, Sprout, Info, ShieldCheck, Zap, AlertTriangle } from 'lucide-react';
 
 function AppContent() {
   const { language } = useLanguage();
@@ -34,7 +34,16 @@ function AppContent() {
       const data = await getFarmerAdvice(district, language);
       setWeatherData(data);
     } catch (err: any) {
-      setError(err.message || getTranslation(language, 'error'));
+      let errorMessage = err.message || getTranslation(language, 'error');
+      
+      // Check for quota/rate limit errors
+      if (errorMessage.includes('429') || errorMessage.includes('quota') || errorMessage.includes('exhausted')) {
+        errorMessage = language === 'ta' 
+          ? "தினசரி பயன்பாட்டு வரம்பு முடிந்துவிட்டது. தயவுசெய்து நாளை மீண்டும் முயற்சிக்கவும் அல்லது புதிய API கீ-ஐப் பயன்படுத்தவும்."
+          : "Daily usage limit reached. Please try again tomorrow or update your API key in settings.";
+      }
+      
+      setError(errorMessage);
       console.error(err);
     } finally {
       setLoading(false);
@@ -152,17 +161,33 @@ function AppContent() {
               ) : error ? (
                 <motion.div
                   key="error"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="text-center py-32"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="max-w-2xl mx-auto text-center py-20 px-6 bg-white rounded-[3rem] shadow-2xl border border-red-50"
                 >
-                  <p className="text-red-500 font-bold text-xl">{error}</p>
-                  <button
-                    onClick={() => handleDistrictSelect(selectedDistrict)}
-                    className="mt-4 px-6 py-2 bg-green-600 text-white rounded-full font-bold"
-                  >
-                    {getTranslation(language, 'retry')}
-                  </button>
+                  <div className="w-20 h-20 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-8">
+                    <AlertTriangle className="w-10 h-10 text-red-500" />
+                  </div>
+                  <h3 className="text-2xl font-black text-gray-900 mb-4">
+                    {language === 'ta' ? 'பிழை ஏற்பட்டது' : 'Something went wrong'}
+                  </h3>
+                  <p className="text-gray-600 font-medium mb-10 leading-relaxed">
+                    {error}
+                  </p>
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <button
+                      onClick={() => handleDistrictSelect(selectedDistrict)}
+                      className="w-full sm:w-auto px-8 py-4 bg-green-600 text-white rounded-2xl font-black shadow-xl shadow-green-200 hover:bg-green-700 transition-all"
+                    >
+                      {getTranslation(language, 'retry')}
+                    </button>
+                    <button
+                      onClick={() => setSelectedDistrict(null)}
+                      className="w-full sm:w-auto px-8 py-4 bg-gray-100 text-gray-700 rounded-2xl font-black hover:bg-gray-200 transition-all"
+                    >
+                      {language === 'ta' ? 'முகப்புக்குச் செல்லவும்' : 'Go Back Home'}
+                    </button>
+                  </div>
                 </motion.div>
               ) : null}
             </AnimatePresence>
