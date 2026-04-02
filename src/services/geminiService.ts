@@ -1,8 +1,5 @@
 import { GoogleGenAI, GenerateContentResponse } from "@google/genai";
 
-const apiKey = process.env.GEMINI_API_KEY;
-const ai = new GoogleGenAI({ apiKey: apiKey! });
-
 export interface WeatherData {
   temperature: string;
   humidity: string;
@@ -17,7 +14,14 @@ export interface WeatherData {
 }
 
 export async function getFarmerAdvice(district: string, lang: 'en' | 'ta'): Promise<WeatherData> {
-  const model = "gemini-3-flash-preview";
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) {
+    console.error("GEMINI_API_KEY is missing from environment");
+    throw new Error("API key not configured");
+  }
+  
+  const ai = new GoogleGenAI({ apiKey });
+  const model = "gemini-flash-latest";
   
   const prompt = `
     Act as an expert agricultural advisor for farmers in Tamil Nadu.
@@ -58,15 +62,22 @@ export async function getFarmerAdvice(district: string, lang: 'en' | 'ta'): Prom
       model: model,
       contents: prompt,
       config: {
-        tools: [{ googleSearch: {} }],
         responseMimeType: "application/json"
       }
     });
 
-    const text = response.text;
+    let text = response.text;
     if (!text) throw new Error("No response from Gemini");
     
-    return JSON.parse(text) as WeatherData;
+    // Strip markdown code blocks if present
+    text = text.replace(/```json\n?|```/g, "").trim();
+    
+    try {
+      return JSON.parse(text) as WeatherData;
+    } catch (parseError) {
+      console.error("Failed to parse Gemini response as JSON:", text);
+      throw new Error("Invalid response format from agricultural advisor");
+    }
   } catch (error) {
     console.error("Error fetching farmer advice:", error);
     throw error;

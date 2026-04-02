@@ -36,8 +36,8 @@ function AppContent() {
     try {
       const data = await getFarmerAdvice(district, language);
       setWeatherData(data);
-    } catch (err) {
-      setError(getTranslation(language, 'error'));
+    } catch (err: any) {
+      setError(err.message || getTranslation(language, 'error'));
       console.error(err);
     } finally {
       setLoading(false);
