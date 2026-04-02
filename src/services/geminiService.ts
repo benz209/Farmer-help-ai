@@ -27,8 +27,12 @@ export async function getFarmerAdvice(district: string, lang: 'en' | 'ta'): Prom
     Act as an expert agricultural advisor for farmers in Tamil Nadu.
     Provide real-time weather information, crop advice, and market trends for the district: ${district}.
     
-    IMPORTANT: Every single string value in the JSON response (except for the keys themselves and the 'severity'/'trend' enum values) MUST be in ${lang === 'ta' ? 'Tamil' : 'English'}.
+    STRICT LANGUAGE REQUIREMENT: You MUST provide all text content in ${lang === 'ta' ? 'TAMIL' : 'ENGLISH'}. 
+    If the language is English, do NOT use any Tamil characters. 
+    If the language is Tamil, use Tamil characters for descriptions and advice.
+    Every single string value in the JSON response (except for the keys themselves and the 'severity'/'trend' enum values) MUST be in ${lang === 'ta' ? 'Tamil' : 'English'}.
     For example, if the language is Tamil, "temperature" value should be like "32°C", "condition" should be "வெயில்", "day" should be "நாளை", etc.
+    If the language is English, "temperature" should be "32°C", "condition" should be "Sunny", "day" should be "Tomorrow", etc.
     
     Return the data in the following JSON format:
     {

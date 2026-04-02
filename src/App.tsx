@@ -29,6 +29,12 @@ function AppContent() {
     return () => unsubscribe();
   }, []);
 
+  useEffect(() => {
+    if (selectedDistrict) {
+      handleDistrictSelect(selectedDistrict);
+    }
+  }, [language]);
+
   const handleDistrictSelect = async (district: string) => {
     setSelectedDistrict(district);
     setLoading(true);
