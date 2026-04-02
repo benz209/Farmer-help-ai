@@ -1,0 +1,5 @@
+{
+  "name": "Uzhavan Thozhan (Farmer's Friend)",
+  "description": "A comprehensive helper app for Tamil Nadu farmers providing real-time weather, crop advice, and market trends in Tamil and English.",
+  "requestFramePermissions": ["geolocation"]
+}

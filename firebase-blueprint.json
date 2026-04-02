@@ -1,0 +1,39 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "Stores user preferences and profile information",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Unique user ID from Firebase Auth" },
+        "displayName": { "type": "string", "description": "User's display name" },
+        "email": { "type": "string", "format": "email", "description": "User's email address" },
+        "preferredLanguage": { "type": "string", "enum": ["en", "ta"], "description": "User's preferred language" },
+        "lastDistrict": { "type": "string", "description": "Last selected district" },
+        "createdAt": { "type": "string", "format": "date-time", "description": "When the profile was created" }
+      },
+      "required": ["uid", "email"]
+    },
+    "SavedLocation": {
+      "title": "Saved Location",
+      "description": "A district saved by the user for quick access",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Owner's user ID" },
+        "district": { "type": "string", "description": "Name of the district" },
+        "addedAt": { "type": "string", "format": "date-time", "description": "When the location was saved" }
+      },
+      "required": ["uid", "district"]
+    }
+  },
+  "firestore": {
+    "/users/{uid}": {
+      "schema": "User",
+      "description": "User profile documents"
+    },
+    "/saved_locations/{locationId}": {
+      "schema": "SavedLocation",
+      "description": "Collection of saved districts"
+    }
+  }
+}
